@@ -1,0 +1,166 @@
+# ============================================================
+#  CRM — root .gitignore
+#  backend (Django) + frontend (Next.js/React) + mobile (Flutter/RN)
+# ============================================================
+
+# ------------------------- Secrets --------------------------
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.keystore
+*.jks
+secrets/
+credentials.json
+service-account*.json
+
+# ------------------------- Python ---------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+sdist/
+wheels/
+*.egg-info/
+*.egg
+.installed.cfg
+MANIFEST
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+backend/venv/
+backend/.venv/
+
+# ------------------------- Django ---------------------------
+*.log
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+/media/
+backend/media/
+/staticfiles/
+backend/staticfiles/
+backend/static_root/
+local_settings.py
+celerybeat-schedule
+celerybeat.pid
+*.pid
+*.sock
+
+# ------------------- Test / lint / coverage ------------------
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+nosetests.xml
+*.cover
+.hypothesis/
+.mypy_cache/
+.dmypy.json
+.ruff_cache/
+.cache/
+
+# ------------------------ Node / Web -------------------------
+node_modules/
+.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.npm
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Build artefaktlar
+frontend/build/
+frontend/dist/
+.turbo/
+.vercel
+.svelte-kit/
+*.tsbuildinfo
+
+# ------------------------- Flutter ---------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+mobile/build/
+mobile/.gradle/
+mobile/android/local.properties
+mobile/android/key.properties
+mobile/android/app/debug/
+mobile/android/app/profile/
+mobile/android/app/release/
+mobile/ios/Pods/
+mobile/ios/Flutter/Flutter.framework
+mobile/ios/Flutter/Flutter.podspec
+mobile/ios/Flutter/Generated.xcconfig
+mobile/ios/Flutter/flutter_export_environment.sh
+mobile/ios/.symlinks/
+*.iml
+
+# React Native
+.expo/
+.expo-shared/
+
+# ------------------------- Docker ----------------------------
+docker-compose.override.yml
+.docker/data/
+postgres_data/
+redis_data/
+
+# ------------------------ IDE / Editor ------------------------
+.idea/
+.vscode/*
+!.vscode/settings.json.example
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# -------------------------- OS -------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ------------------------ Boshqalar ---------------------------
+*.bak
+*.tmp
+tmp/
+temp/
+.claude/settings.local.json

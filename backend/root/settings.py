@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 
     # my apps
     'analytics',
-    'auth',
+    'users',
     'product',
     'order',
 
@@ -71,7 +71,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'root.urls'
-
+AUTH_USER_MODEL = 'users.User'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

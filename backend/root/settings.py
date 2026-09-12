@@ -58,6 +58,7 @@ INSTALLED_APPS = [
 
     # install apps
     'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -137,7 +138,22 @@ CELERY_TIMEZONE = env.str('DJANGO_TIME_ZONE', default='Asia/Tashkent')
 
 
 # ------------------------------------------------------------------
-# JWT (djangorestframework-simplejwt o'rnatilgach ishlaydi)
+# Django REST Framework
+# ------------------------------------------------------------------
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+}
+
+
+# ------------------------------------------------------------------
+# JWT (djangorestframework-simplejwt)
 # ------------------------------------------------------------------
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(
@@ -147,6 +163,9 @@ SIMPLE_JWT = {
         days=env.int('JWT_REFRESH_TOKEN_LIFETIME_DAYS', default=7)
     ),
     'ROTATE_REFRESH_TOKENS': env.bool('JWT_ROTATE_REFRESH_TOKENS', default=True),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
 }
 
 

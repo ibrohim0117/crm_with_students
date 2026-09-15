@@ -3,8 +3,21 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User, VerificationCode
 
 
+class VerificationCodeInline(admin.TabularInline):
+    model = VerificationCode
+    fields = ('code', 'purpose', 'is_used', 'attempts', 'expires_at', 'created_at')
+    readonly_fields = fields
+    extra = 0
+    can_delete = False
+    ordering = ('-created_at',)
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    inlines = (VerificationCodeInline,)
     # Admin panel ro'yxatida ko'rinadigan ustunlar
     list_display = ('phone_number', 'full_name', 'email', 'role', 'is_active', 'is_staff', 'telegram_id')
     list_filter = ('role', 'is_active', 'is_staff')

@@ -1,10 +1,12 @@
 import re
 
 from django.contrib.auth.password_validation import validate_password
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
+from .services import create_verification_code
 
 
 def normalize_phone_number(value):
@@ -99,10 +101,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         validate_password(value)
         return value
 
+    @transaction.atomic
     def create(self, validated_data):
         password = validated_data.pop('password')
         # is_active=False — akkaunt Telegram bot orqali tasdiqlanmaguncha yopiq turadi.
-        return User.objects.create_user(password=password, **validated_data)
+        user = User.objects.create_user(password=password, **validated_data)
+        # Hozircha kod hech qayerga yuborilmaydi — admin paneldan ko'riladi.
+        create_verification_code(user)
+        return user
 
 
 class LoginSerializer(serializers.Serializer):

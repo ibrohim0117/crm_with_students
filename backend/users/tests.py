@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import User
+from .models import User, VerificationCode
 
 
 class RegisterAPITests(APITestCase):
@@ -160,3 +160,22 @@ class MeAPITests(APITestCase):
         self.authenticate()
         response = self.client.put(self.url, {'full_name': 'X'})
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class RegisterVerificationCodeTests(APITestCase):
+    def test_register_creates_verification_code(self):
+        response = self.client.post(reverse('users:register'), {
+            'full_name': 'Ali Valiyev',
+            'phone_number': '+998901234567',
+            'email': 'ali@example.com',
+            'password': 'StrongPass123',
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        user = User.objects.get(phone_number='+998901234567')
+        code = user.codes.get()
+        self.assertEqual(code.purpose, VerificationCode.Purpose.REGISTER)
+        self.assertRegex(code.code, r'^\d{6}$')
+        self.assertTrue(code.is_valid())
+        # kod javobda qaytmasligi kerak
+        self.assertNotIn(code.code, response.content.decode())

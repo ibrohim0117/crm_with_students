@@ -1,5 +1,6 @@
 from django.utils import timezone
-from rest_framework import generics, permissions, status
+from drf_spectacular.utils import OpenApiResponse, extend_schema
+from rest_framework import generics, permissions, serializers, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,6 +13,26 @@ from .serializers import (
 )
 
 
+class DetailSerializer(serializers.Serializer):
+    detail = serializers.CharField()
+
+
+class RegisterResponseSerializer(serializers.Serializer):
+    user = UserSerializer()
+    detail = serializers.CharField()
+
+
+class LoginResponseSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()
+    user = UserSerializer()
+
+
+@extend_schema(
+    summary="Ro'yxatdan o'tish",
+    auth=[],
+    responses={201: RegisterResponseSerializer},
+)
 class RegisterAPIView(generics.CreateAPIView):
     """POST /api/v1/auth/register/ — ro'yxatdan o'tish (is_active=False)."""
 
@@ -45,6 +66,17 @@ class LoginAPIView(APIView):
         'inactive_account': status.HTTP_403_FORBIDDEN,
     }
 
+    @extend_schema(
+        summary='Login (JWT olish)',
+        auth=[],
+        request=LoginSerializer,
+        responses={
+            200: LoginResponseSerializer,
+            400: OpenApiResponse(DetailSerializer, description='Telefon raqam yoki parol xato'),
+            403: OpenApiResponse(DetailSerializer, description='Akkaunt tasdiqlanmagan'),
+            404: OpenApiResponse(DetailSerializer, description='Bunday foydalanuvchi topilmadi'),
+        },
+    )
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         try:
@@ -72,6 +104,7 @@ class LoginAPIView(APIView):
         )
 
 
+@extend_schema(summary='Joriy foydalanuvchi profili')
 class MeAPIView(generics.RetrieveUpdateAPIView):
     """GET / PATCH /api/v1/auth/me/ — faqat autentifikatsiyadan o'tgan user uchun."""
 

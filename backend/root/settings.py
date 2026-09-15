@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     # install apps
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -149,6 +150,25 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+# ------------------------------------------------------------------
+# API hujjatlari (drf-spectacular)
+# ------------------------------------------------------------------
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'CRM API',
+    'DESCRIPTION': 'CRM loyihasi uchun REST API hujjatlari.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # tag'lar '/api/v1/' dan keyingi birinchi segmentdan olinadi (masalan: auth)
+    'SCHEMA_PATH_PREFIX': r'/api/v[0-9]+',
+    # multipart (avatar) so'rovlarni to'g'ri ko'rsatish uchun
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
 }
 
 

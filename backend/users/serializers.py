@@ -144,3 +144,21 @@ class LoginSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class ResendCodeSerializer(serializers.Serializer):
+    """`/auth/resend-code/` uchun: {phone_number}."""
+
+    phone_number = serializers.CharField(max_length=20)
+
+    def validate_phone_number(self, value):
+        return normalize_phone_number(value)
+
+
+class ConfirmSerializer(ResendCodeSerializer):
+    """`/auth/confirm/` uchun: {phone_number, code}."""
+
+    code = serializers.RegexField(
+        r'^\d{6}$',
+        error_messages={'invalid': "Kod 6 xonali raqam bo'lishi kerak."},
+    )
